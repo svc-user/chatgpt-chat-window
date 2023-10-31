@@ -13,8 +13,6 @@ type
     TopPValue: Float64;
     TemperatureValue: Float64;
     EngineModel: string;
-    LoggingEnabled: Boolean;
-    LogPath: string;
     StreamResponse: Boolean;
 
     procedure LoadSettingsFile;
@@ -31,15 +29,14 @@ var
 
 constructor TChatSettings.Create;
 begin
+  inherited;
   settingsFileLocation := TPath.Combine(TPath.Combine(TPath.GetHomePath, '.chat-window'), 'settings.json');
 
   ApiKey := '';
   TopPValue := 1.0;
   TemperatureValue := 1.0;
   EngineModel := 'gpt-3.5-turbo';
-  LoggingEnabled := True;
   StreamResponse := False;
-  LogPath := TPath.Combine(TPath.Combine(TPath.GetHomePath, '.chat-window'), 'conversations');
 
 end;
 
@@ -48,10 +45,8 @@ var
   jsonWriter: TJSONMarshal;
   marshalledObject: string;
 begin
-
   jsonWriter := TJSONMarshal.Create;
-  marshalledObject := jsonWriter.Marshal(Self).ToString;
-
+  marshalledObject := jsonWriter.Marshal(Self).ToJSON;
   TFile.WriteAllText(settingsFileLocation, marshalledObject);
 
   FreeAndNil(jsonWriter);
@@ -74,8 +69,6 @@ begin
   Self.TopPValue := unm.TopPValue;
   Self.TemperatureValue := unm.TemperatureValue;
   Self.EngineModel := unm.EngineModel;
-  Self.LoggingEnabled := unm.LoggingEnabled;
-  Self.LogPath := unm.LogPath;
   Self.StreamResponse := unm.StreamResponse;
 
   FreeAndNil(unm);

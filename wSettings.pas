@@ -22,9 +22,6 @@ type
     trackBarTemp: TTrackBar;
     trackBarTopP: TTrackBar;
     lblTopP: TLabel;
-    chkEnableLogging: TCheckBox;
-    btnSetLogPath: TButton;
-    txtLogPath: TEdit;
     chkStreamResponse: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -33,8 +30,6 @@ type
     procedure txtApiKeyChange(Sender: TObject);
     procedure radGrpEngineClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
-    procedure chkEnableLoggingClick(Sender: TObject);
-    procedure btnSetLogPathClick(Sender: TObject);
     procedure chkStreamResponseClick(Sender: TObject);
   private
     FOnSave: TSaveEvent;
@@ -65,18 +60,10 @@ begin
   FSettings.LoadSettingsFile;
 
   radGrpEngine.ItemIndex := radGrpEngine.Items.IndexOf(FSettings.EngineModel);
-  chkEnableLogging.Checked := FSettings.LoggingEnabled;
-  txtLogPath.Text := FSettings.LogPath;
   trackBarTopP.Position := Trunc(FSettings.TopPValue * trackBarTopP.Max);
   trackBarTemp.Position := Trunc(FSettings.TemperatureValue * (trackBarTemp.Max div 2));
   txtApiKey.Text := FSettings.ApiKey;
   chkStreamResponse.Checked := FSettings.StreamResponse;
-
-  if not TDirectory.Exists(FSettings.LogPath) then
-  begin
-    TDirectory.CreateDirectory(FSettings.LogPath);
-  end;
-
 end;
 
 procedure TfrmSettings.btnCloseClick(Sender: TObject);
@@ -94,27 +81,6 @@ begin
   end;
   Self.Close;
 
-end;
-
-procedure TfrmSettings.btnSetLogPathClick(Sender: TObject);
-var
-  Dir: string;
-begin
-
-  Dir := FSettings.LogPath;
-  if FileCtrl.SelectDirectory(Dir, [TSelectDirOpt.sdAllowCreate, TSelectDirOpt.sdPerformCreate], 1000) then
-  begin
-    FSettings.LogPath := Dir;
-    txtLogPath.Text := FSettings.LogPath;
-  end;
-
-end;
-
-procedure TfrmSettings.chkEnableLoggingClick(Sender: TObject);
-begin
-  FSettings.LoggingEnabled := chkEnableLogging.Checked;
-  txtLogPath.Enabled := FSettings.LoggingEnabled;
-  btnSetLogPath.Enabled := FSettings.LoggingEnabled;
 end;
 
 procedure TfrmSettings.chkStreamResponseClick(Sender: TObject);

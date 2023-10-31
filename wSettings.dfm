@@ -102,39 +102,13 @@ object frmSettings: TfrmSettings
     TickMarks = tmBoth
     OnChange = trackBarTopPChange
   end
-  object chkEnableLogging: TCheckBox
-    Left = 23
-    Top = 244
-    Width = 70
-    Height = 17
-    Caption = 'Logging?'
-    TabOrder = 6
-    OnClick = chkEnableLoggingClick
-  end
-  object btnSetLogPath: TButton
-    Left = 387
-    Top = 241
-    Width = 28
-    Height = 25
-    Anchors = [akRight, akBottom]
-    Caption = '...'
-    TabOrder = 7
-    OnClick = btnSetLogPathClick
-  end
-  object txtLogPath: TEdit
-    Left = 99
-    Top = 241
-    Width = 282
-    Height = 23
-    TabOrder = 8
-  end
   object chkStreamResponse: TCheckBox
     Left = 99
     Top = 87
     Width = 111
     Height = 17
     Caption = 'Stream response?'
-    TabOrder = 9
+    TabOrder = 6
     OnClick = chkStreamResponseClick
   end
 end

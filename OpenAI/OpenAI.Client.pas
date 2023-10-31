@@ -77,6 +77,7 @@ end;
 procedure TOpenAIClient.UpdateSettings(const settings: TChatSettings);
 begin
   FSettings := settings;
+  FWebClient.CustomHeaders['Authorization'] := 'Bearer ' + FSettings.ApiKey;
 end;
 
 procedure TOpenAIClient.Reset;
@@ -94,7 +95,8 @@ var
   messages: TArray<TChatMessage>;
   I: Integer;
 begin
-  FMessages := TJson.JsonToObject<TObjectList<TChatMessage>>(jsonString, [TJsonOption.joIgnoreEmptyStrings, TJsonOption.joIgnoreEmptyArrays, TJsonOption.joIndentCaseLower]);
+  FMessages := TJson.JsonToObject < TObjectList < TChatMessage >> (jsonString, [TJsonOption.joIgnoreEmptyStrings, TJsonOption.joIgnoreEmptyArrays,
+    TJsonOption.joIndentCaseLower]);
 end;
 
 procedure TOpenAIClient.SetSystemMessage(const systemMessage: string);

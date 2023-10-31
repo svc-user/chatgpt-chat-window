@@ -53,6 +53,10 @@ type
     procedure Setsystemprompt1Click(Sender: TObject);
     procedure menuSaveConvClick(Sender: TObject);
     procedure menuLoadConvClick(Sender: TObject);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure saveConversation;
+    procedure loadConversation;
+    procedure setSystemPromptForm;
 
   private
     { Private declarations }
@@ -118,9 +122,13 @@ begin
 end;
 
 procedure TfrmMain.menuSaveConvClick(Sender: TObject);
+begin
+  saveConversation;
+end;
+
+procedure TfrmMain.saveConversation;
 var
-  initDir: string;
-  fileJson: string;
+  initDir, fileJson: string;
 begin
   initDir := TPath.Combine(TPath.Combine(TPath.GetHomePath, '.chat-window'), 'conversations');
   dlgSaveConversation.InitialDir := initDir;
@@ -132,6 +140,11 @@ begin
 end;
 
 procedure TfrmMain.menuLoadConvClick(Sender: TObject);
+begin
+  loadConversation;
+end;
+
+procedure TfrmMain.loadConversation;
 var
   initDir: string;
   fileJson: string;
@@ -195,6 +208,25 @@ begin
 
 end;
 
+procedure TfrmMain.FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if ssCtrl in Shift then
+  begin
+    if Key = Ord('S') then
+    begin
+      saveConversation;
+    end
+    else if Key = Ord('O') then
+    begin
+      loadConversation;
+    end
+    else if Key = Ord('M') then
+    begin
+      setSystemPromptForm;
+    end;
+  end;
+end;
+
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   txtRequest.SetFocus;
@@ -204,9 +236,15 @@ procedure TfrmMain.onSettingsSaved(S: TChatSettings);
 begin
   ChatSettings := S;
   SetFormCaption;
+  apiClient.UpdateSettings(ChatSettings);
 end;
 
 procedure TfrmMain.Setsystemprompt1Click(Sender: TObject);
+begin
+  setSystemPromptForm;
+end;
+
+procedure TfrmMain.setSystemPromptForm;
 var
   frmSysMessage: TfrmSysMessage;
 begin
